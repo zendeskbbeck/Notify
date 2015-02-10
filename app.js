@@ -24,7 +24,8 @@
       this.ajax('userGetRequest', id);
 
     },
-
+    
+    //Check to see if notification should be generate and, if needed, generate it
     checkForAndDisplayAlert: function(data) {
       var userData = data.user.user_fields.update_info;
       var userID = data.user.id;
@@ -33,7 +34,8 @@
       } else {}
 
     },
-
+    
+    //Handle error if unable to get user information
     showError: function() {
       services.notify("NotifyApp: Unable to gather user data. You may want to check to see if an update is needed.", 'alert');
 
