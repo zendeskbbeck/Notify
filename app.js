@@ -2,12 +2,13 @@
 
   return {
     events: {
-      'app.created':'generateAlert',
-      'userGetRequest.done': 'this.showAlert',
+      'app.created':'getTicketRequesterID',
+      'userGetRequest.done': 'this.checkForAndDisplayAlert',
       'userGetRequest.fail': 'this.showError',
     },
 
     requests: {
+      //Get the profile of the current ticket's requester
       userGetRequest: function(id) {
         return {
           url: '/api/v2/users/' + id + '.json',
@@ -17,24 +18,24 @@
       },
     },
 
-    generateAlert: function() {
+    //Get the ID of the Ticket's requester
+    getTicketRequesterID: function() {
       var id = this.ticket().requester().id();
       this.ajax('userGetRequest', id);
 
     },
 
-    showAlert: function(data) {
-      console.log(data);
+    checkForAndDisplayAlert: function(data) {
       var userData = data.user.user_fields.update_info;
       var userID = data.user.id;
        if (userData == "yes_update") {
-        services.notify("You should update this user's data, they are user " + userID + ".", 'alert');
+        services.notify("You should update this user's data.", 'alert');
       } else {}
 
     },
 
     showError: function() {
-      alert("Unable to gather user data. You may want to check to see if an update is needed.");
+      services.notify("NotifyApp: Unable to gather user data. You may want to check to see if an update is needed.", 'alert');
 
     }
   };
